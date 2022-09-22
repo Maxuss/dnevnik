@@ -1,10 +1,11 @@
 use std::str::FromStr;
 use std::time::Duration;
+use chrono::{DateTime, Utc};
 use lazy_static::lazy_static;
 use reqwest::{Client, ClientBuilder, Url};
 use reqwest::header::{HeaderMap, HeaderValue, REFERER, USER_AGENT};
 use crate::model::{StudentProfile, StudentSession};
-use crate::model::lessons::AcademicYear;
+use crate::model::lessons::{AcademicYear, Schedule};
 
 pub const GLOBAL_DMR_URL: &'static str = "https://dnevnik.mos.ru";
 pub const CORE_API: &'static str = "/core/api";
@@ -15,6 +16,7 @@ lazy_static! {
     pub static ref PROFILE_ENDPOINT: String = format!("{}{}/profile", GLOBAL_DMR_URL, MOBILE_API);
     pub static ref SESSIONS_ENDPOINT: String = format!("{}{}/sessions", GLOBAL_DMR_URL, LMS_API);
     pub static ref ACADEMIC_YEARS_ENDPOINT: String = format!("{}{}/academic_years", GLOBAL_DMR_URL, CORE_API);
+    pub static ref SCHEDULE_ENDPOINT: String = format!("{}{}/schedule", GLOBAL_DMR_URL, MOBILE_API);
 }
 
 #[allow(unused)]
@@ -41,10 +43,11 @@ impl Diary {
         let session: StudentSession = client.post(Url::from_str(&SESSIONS_ENDPOINT)?).json(&StudentAuth {
             auth_token: str_token.clone()
         }).send().await?.json().await?;
+        let profile: StudentProfile = client.get(Url::from_str(&PROFILE_ENDPOINT)?).send().await?.json().await?;
         Ok(Self {
             client,
             auth_token: str_token,
-            student_id: session.id.clone(),
+            student_id: profile.account.id,
             session,
         })
     }
@@ -55,5 +58,16 @@ impl Diary {
 
     pub async fn get_academic_years(&self) -> anyhow::Result<Vec<AcademicYear>> {
         self.client.get(Url::from_str(&ACADEMIC_YEARS_ENDPOINT)?).send().await?.json().await.map_err(anyhow::Error::from)
+    }
+
+    pub async fn get_schedule(&self, date: DateTime<Utc>) -> anyhow::Result<Schedule> {
+        let date = date.naive_utc().date();
+        self.client
+            .get(Url::from_str(&SCHEDULE_ENDPOINT)?)
+            .query(&[("student_id", self.student_id)])
+            .query(&[("date", date.to_string())])
+            .send().await?
+            .json().await
+            .map_err(anyhow::Error::from)
     }
 }
