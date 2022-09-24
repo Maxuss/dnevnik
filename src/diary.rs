@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use std::str::FromStr;
 use std::time::Duration;
 use anyhow::bail;
-use chrono::{DateTime, NaiveDateTime, Utc};
+use chrono::{DateTime, Utc};
 use lazy_static::lazy_static;
 use reqwest::{Client, ClientBuilder, Url};
 use reqwest::header::{ACCEPT, AUTHORIZATION, COOKIE, HeaderMap, HeaderValue, REFERER, USER_AGENT};
@@ -60,7 +60,14 @@ impl Diary {
     }
 
     pub async fn session(&self) -> anyhow::Result<StudentSession> {
-        self.client.get(Url::from_str(&SESSIONS_ENDPOINT)?).send().await?.json().await.map_err(anyhow::Error::from)
+        self.client
+            .post(Url::from_str(&SESSIONS_ENDPOINT)?)
+            .json(&StudentAuth {
+                auth_token: self.auth_token.clone()
+            })
+            .send().await?
+            .json().await
+            .map_err(anyhow::Error::from)
     }
 
     pub async fn academic_years(&self) -> anyhow::Result<Vec<AcademicYear>> {
@@ -136,7 +143,7 @@ impl Diary {
     }
 
     pub async fn download_attachment(&self, path: PathBuf, attachment: &HomeworkAttachment) -> anyhow::Result<()> {
-        let mut bytes = self.client
+        let bytes = self.client
             .get(Url::from_str(&format!("{}{}", GLOBAL_DMR_URL, attachment.relative_path))?)
             .timeout(Duration::from_secs(15))
             .send().await?

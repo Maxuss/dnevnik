@@ -25,6 +25,8 @@ mod tests {
             .find(|year| year.is_current)
             .ok_or(anyhow::Error::msg("Could not find current academic year!"))?;
         println!("Current Year: {}, Start/End ({}/{})", current_year.description, current_year.begin_date, current_year.end_date);
+        let finals = diary.final_marks(current_year).await?;
+        println!("{:#?}", finals);
         Ok(())
     }
 
@@ -81,6 +83,15 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn test_sessions() -> anyhow::Result<()> {
+        dotenv()?;
+        let diary = Diary::new(env::var("AUTH_TOKEN")?).await?;
+        let session = diary.session().await?;
+        println!("{:#?}", session);
+        Ok(())
+    }
+
+    #[tokio::test]
     async fn test_homework_downloader() -> anyhow::Result<()> {
         dotenv()?;
         let diary = Diary::new(env::var("AUTH_TOKEN")?).await?;
@@ -89,7 +100,9 @@ mod tests {
             if !hw.homework_entry.attachments.is_empty() {
                 let attachment = &hw.homework_entry.attachments[0];
                 println!("Downloading attachment for {} ({})", hw.homework_entry.subject().name, attachment.file_name);
-                diary.download_attachment(PathBuf::from(&attachment.file_name), attachment).await?;
+                let path = PathBuf::from(&attachment.file_name);
+                diary.download_attachment(path.clone(), attachment).await?;
+                tokio::fs::remove_file(path).await?;
             }
         }
         Ok(())

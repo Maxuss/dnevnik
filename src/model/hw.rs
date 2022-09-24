@@ -1,8 +1,5 @@
-use std::path::PathBuf;
 use chrono::NaiveDateTime;
 use serde::Deserialize;
-use crate::diary::Diary;
-use crate::model::lessons::LessonInstance;
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct StudentHomework {
@@ -98,7 +95,7 @@ mod datetime_de {
     }
 
     use std::fmt;
-    use chrono::{DateTime, NaiveDateTime, Utc};
+    use chrono::NaiveDateTime;
     use serde::de;
 
     struct OptionalDateTimeFormatVisitor;
