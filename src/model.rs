@@ -1,4 +1,5 @@
 pub mod lessons;
+pub mod hw;
 
 use chrono::NaiveDate;
 use serde::Deserialize;

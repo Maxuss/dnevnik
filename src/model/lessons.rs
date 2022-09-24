@@ -188,3 +188,89 @@ pub enum ScheduleActivity {
     /// Means that this activity
     Break(BreakActivity)
 }
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct FinalMark {
+    /// Value of this mark
+    pub value: f32,
+    /// Type of the grading system
+    #[serde(rename = "grade_system_type")]
+    pub grade_system: String,
+    /// Whether the student was attested this year
+    pub attested: bool,
+    /// Whether the student had academical debt this year
+    #[serde(rename = "academic_debt")]
+    pub has_debt: bool,
+    /// ID of the subject this mark belongs to
+    pub subject_id: u64,
+    /// Name of the subject this mark belongs to
+    pub subject_name: String
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct LessonScheduleItem {
+    /// ID of this schedule item
+    pub id: u64,
+    /// Plan ID of this lesson
+    pub plan_id: Option<u64>,
+    /// ID of this lesson's subject
+    pub subject_id: u64
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct ModuleTopic {
+    /// ID of this topic
+    pub id: u64,
+    /// Name of this topic's theme
+    pub name: String,
+    /// Whether this topic is repeated later
+    pub repeatable: bool,
+    /// ID for this topic's theme frame
+    pub theme_frame_id: Option<u64>,
+    /// A \# prefixed string containing accent hex color for this topic
+    pub color: Option<String>,
+    /// Date at which this topic was created
+    pub created_at: NaiveDateTime,
+    /// Date at which this topic was updated
+    pub updated_at: NaiveDateTime,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct PlanModule {
+    /// ID of this module
+    pub id: u64,
+    /// Name of this module
+    pub name: String,
+    /// Internal one-based ordinal ID of this module
+    pub ordinal: Option<u64>,
+    /// Date at which this module was created
+    pub created_at: NaiveDateTime,
+    /// Date at which this module was updated
+    pub updated_at: NaiveDateTime,
+    /// List of all topics for this module
+    pub topics: Vec<ModuleTopic>
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct LessonPlan {
+    /// ID of this lesson's plan
+    pub id: u64,
+    /// Name of this plan
+    pub name: String,
+    /// ID of this plan's template
+    pub template_id: u64,
+    /// ID of this plan's subject
+    pub subject_id: u64,
+    /// ID of this plan's teacher
+    pub teacher_id: u64,
+    /// Count of lessons in this plan
+    pub lesson_count: u64,
+    /// Count of modules in this plan
+    pub module_count: u64,
+    /// Date at which this plan was created
+    pub created_at: NaiveDateTime,
+    /// Date at which this plan was updated
+    pub updated_at: NaiveDateTime,
+    /// List, containing all of the modules for this plan
+    pub modules: Vec<PlanModule>,
+}
