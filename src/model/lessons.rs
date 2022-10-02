@@ -20,9 +20,9 @@ pub struct Teacher {
 impl Teacher {
     pub fn name(&self) -> String {
         let mut name = self.last_name.clone();
-        name.push_str(" ");
+        name.push(' ');
         name.push_str(&self.first_name);
-        name.push_str(" ");
+        name.push(' ');
         name.push_str(&self.middle_name);
         name
     }
@@ -184,7 +184,7 @@ pub struct BreakActivity {
 #[serde(tag = "type")]
 pub enum ScheduleActivity {
     /// Means that this activity is a lesson
-    Lesson(LessonActivity),
+    Lesson(Box<LessonActivity>),
     /// Means that this activity
     Break(BreakActivity),
 }

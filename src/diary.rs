@@ -15,12 +15,12 @@ use std::path::PathBuf;
 use std::str::FromStr;
 use std::time::Duration;
 
-pub const GLOBAL_DMR_URL: &'static str = "https://dnevnik.mos.ru";
-pub const CORE_API: &'static str = "/core/api";
-pub const MOBILE_API: &'static str = "/mobile/api";
-pub const LMS_API: &'static str = "/lms/api";
-pub const JERSEY_API: &'static str = "/jersey/api";
-pub const REPORTS_API: &'static str = "/jersey/api";
+pub const GLOBAL_DMR_URL: &str = "https://dnevnik.mos.ru";
+pub const CORE_API: &str = "/core/api";
+pub const MOBILE_API: &str = "/mobile/api";
+pub const LMS_API: &str = "/lms/api";
+pub const JERSEY_API: &str = "/jersey/api";
+pub const REPORTS_API: &str = "/jersey/api";
 
 lazy_static! {
     pub static ref PROFILE_ENDPOINT: String = format!("{}{}/profile", GLOBAL_DMR_URL, MOBILE_API);
@@ -53,6 +53,7 @@ struct StudentAuth {
 }
 
 impl Diary {
+    #[allow(clippy::option_env_unwrap)]
     pub async fn new<S: Into<String>>(token: S) -> anyhow::Result<Self> {
         let str_token = token.into();
         let mut default_headers = HeaderMap::new();
@@ -160,7 +161,7 @@ impl Diary {
     /// Returns `Err` when the lesson lacks a scheduled plan (at least according to API)
     pub async fn lesson_plan(&self, lesson: &LessonInstance) -> anyhow::Result<LessonPlan> {
         let schedule_item = self.lesson_schedule_item(lesson.schedule_id).await?;
-        if let None = schedule_item.plan_id {
+        if schedule_item.plan_id.is_none() {
             bail!(
                 "Could not get plan ID for the lesson {}!",
                 lesson.subject_name
@@ -184,7 +185,7 @@ impl Diary {
             .await?
             .json()
             .await?;
-        return Ok(ele[0].to_owned());
+        Ok(ele[0].to_owned())
     }
 
     pub async fn homework(
@@ -257,12 +258,9 @@ impl Diary {
             .query(&[("to", to.date().to_string())])
             .query(&[(
                 "contract_id",
-                self.profile
-                    .details()
-                    .contract_id
-                    .ok_or(anyhow::Error::msg(
-                        "Provided student profile did not have `contract_id`!",
-                    ))?,
+                self.profile.details().contract_id.ok_or_else(|| {
+                    anyhow::Error::msg("Provided student profile did not have `contract_id`!")
+                })?,
             )])
             .send()
             .await?
