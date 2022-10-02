@@ -10,7 +10,7 @@ pub struct StudentHomework {
     /// Whether this homework is ready
     pub is_ready: bool,
     /// Entry for this homework
-    pub homework_entry: HomeworkEntry
+    pub homework_entry: HomeworkEntry,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -33,7 +33,7 @@ pub struct HomeworkEntry {
     pub expected_duration: u32,
     /// All attachments to this homework entry
     pub attachments: Vec<HomeworkAttachment>,
-    homework: InternalHomeworkEntry
+    homework: InternalHomeworkEntry,
 }
 
 impl HomeworkEntry {
@@ -44,7 +44,7 @@ impl HomeworkEntry {
 
 #[derive(Debug, Clone, Deserialize)]
 struct InternalHomeworkEntry {
-    subject: HomeworkSubject
+    subject: HomeworkSubject,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -52,7 +52,7 @@ pub struct HomeworkSubject {
     /// ID of this subject
     pub id: u64,
     /// Name of this subject
-    pub name: String
+    pub name: String,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -73,35 +73,34 @@ pub struct HomeworkAttachment {
     pub content_type: String,
     /// Relative path to this file URL
     #[serde(rename = "path")]
-    pub relative_path: String
+    pub relative_path: String,
 }
 
 #[doc(hidden)]
 mod datetime_de {
     #[doc(hidden)]
     pub fn deserialize_datetime<'de, D>(d: D) -> Result<NaiveDateTime, D::Error>
-        where
-            D: de::Deserializer<'de>,
+    where
+        D: de::Deserializer<'de>,
     {
         d.deserialize_str(DateTimeFromCustomFormatVisitor)
     }
 
     #[doc(hidden)]
     pub fn deserialize_opt_datetime<'de, D>(d: D) -> Result<Option<NaiveDateTime>, D::Error>
-        where
-            D: de::Deserializer<'de>,
+    where
+        D: de::Deserializer<'de>,
     {
         d.deserialize_option(OptionalDateTimeFormatVisitor)
     }
 
-    use std::fmt;
     use chrono::NaiveDateTime;
     use serde::de;
+    use std::fmt;
 
     struct OptionalDateTimeFormatVisitor;
 
     struct DateTimeFromCustomFormatVisitor;
-
 
     impl<'de> de::Visitor<'de> for OptionalDateTimeFormatVisitor {
         type Value = Option<NaiveDateTime>;
@@ -111,15 +110,15 @@ mod datetime_de {
         }
 
         fn visit_none<E>(self) -> Result<Self::Value, E>
-            where
-                E: de::Error,
+        where
+            E: de::Error,
         {
             Ok(None)
         }
 
         fn visit_some<D>(self, d: D) -> Result<Option<NaiveDateTime>, D::Error>
-            where
-                D: de::Deserializer<'de>,
+        where
+            D: de::Deserializer<'de>,
         {
             Ok(Some(d.deserialize_str(DateTimeFromCustomFormatVisitor)?))
         }
@@ -133,8 +132,8 @@ mod datetime_de {
         }
 
         fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
-            where
-                E: de::Error,
+        where
+            E: de::Error,
         {
             match NaiveDateTime::parse_from_str(value, "%d.%m.%Y %H:%M") {
                 Ok(ndt) => Ok(ndt),

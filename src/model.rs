@@ -1,5 +1,7 @@
-pub mod lessons;
+pub mod attendance;
 pub mod hw;
+pub mod lessons;
+pub mod marks;
 
 use chrono::NaiveDate;
 use serde::Deserialize;
@@ -38,7 +40,7 @@ pub struct StudentProfile {
     pub account: Account,
     /// A single element list containing details of this student
     #[serde(rename = "children")]
-    details: Vec<StudentDetails>
+    details: Vec<StudentDetails>,
 }
 
 impl StudentProfile {
@@ -64,7 +66,7 @@ pub struct Account {
     pub user_id: Option<u32>,
     /// This is the actual id of the account, as opposed to the [user_id] field
     pub id: u64,
-    /// The use of this property is unknown, as it is observed to be `null`
+    /// Another id of the account, because developers of school.mos.ru were on hard drugs when coding the API
     pub contract_id: Option<u32>,
     /// Phone number of the account's owner, excluding the regional phone number
     pub phone: String,
@@ -74,7 +76,7 @@ pub struct Account {
     pub snils: String,
     /// Type of the account, `"student"` for students and `"teacher"` for teachers and `null` for external accounts (e.g. representatives)
     #[serde(rename = "type")]
-    pub profile_type: Option<String>
+    pub profile_type: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -91,7 +93,7 @@ pub struct School {
     /// Full name of the principal of this school
     pub principal: String,
     /// Contact phone for this school, excluding the regional number code
-    pub phone: String
+    pub phone: String,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -133,4 +135,6 @@ pub struct StudentDetails {
     /// UUID that is bound to this student
     #[serde(rename = "contingent_guid")]
     pub uuid: Uuid,
+    /// Another Unique ID of this account
+    pub contract_id: Option<u32>,
 }

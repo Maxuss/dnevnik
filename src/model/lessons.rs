@@ -35,7 +35,7 @@ pub struct Grade {
     pub five_based: f32,
     /// Hundred-base value of this grade
     #[serde(rename = "hundred")]
-    pub hundred_based: f32
+    pub hundred_based: f32,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -51,7 +51,7 @@ pub struct SystemBasedMarkValue {
     #[serde(rename = "grade_system_type")]
     pub internal_grade_system_type: Option<String>,
     /// Graded value of this mark, contains the actual integer value in different systems
-    pub grade: Grade
+    pub grade: Grade,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -102,7 +102,7 @@ pub struct LessonInstance {
     /// Whether you have missed this lesson
     pub is_missed_lesson: bool,
     /// Whether this is a virtual lesson
-    pub is_virtual: bool
+    pub is_virtual: bool,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -113,7 +113,7 @@ pub struct Schedule {
     pub date: NaiveDate,
     /// All lessons and breaks in this schedule
     #[serde(rename = "activities")]
-    pub lessons: Vec<ScheduleActivity>
+    pub lessons: Vec<ScheduleActivity>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -129,7 +129,7 @@ pub struct AcademicYear {
     pub end_date: NaiveDate,
     /// Whether this year is the current academic year
     #[serde(rename = "current_year")]
-    pub is_current: bool
+    pub is_current: bool,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -176,7 +176,7 @@ pub struct BreakActivity {
     #[serde(with = "chrono::serde::ts_seconds")]
     pub end: DateTime<Utc>,
     /// Time in seconds that this break takes
-    pub duration: u64
+    pub duration: u64,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -186,7 +186,7 @@ pub enum ScheduleActivity {
     /// Means that this activity is a lesson
     Lesson(LessonActivity),
     /// Means that this activity
-    Break(BreakActivity)
+    Break(BreakActivity),
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -204,7 +204,7 @@ pub struct FinalMark {
     /// ID of the subject this mark belongs to
     pub subject_id: u64,
     /// Name of the subject this mark belongs to
-    pub subject_name: String
+    pub subject_name: String,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -214,7 +214,7 @@ pub struct LessonScheduleItem {
     /// Plan ID of this lesson
     pub plan_id: Option<u64>,
     /// ID of this lesson's subject
-    pub subject_id: u64
+    pub subject_id: u64,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -248,7 +248,7 @@ pub struct PlanModule {
     /// Date at which this module was updated
     pub updated_at: NaiveDateTime,
     /// List of all topics for this module
-    pub topics: Vec<ModuleTopic>
+    pub topics: Vec<ModuleTopic>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
