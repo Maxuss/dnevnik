@@ -52,7 +52,13 @@ mod tests {
                     None
                 }
             })
-            .filter(|lesson| !lesson.subject.marks.is_empty())
+            .filter_map(|lesson| {
+                if !lesson.subject.marks.is_empty() {
+                    Some(&**lesson)
+                } else {
+                    None
+                }
+            })
             .collect::<Vec<&LessonActivity>>();
         for lesson in with_marks {
             let mark = lesson.subject.marks.first().unwrap();
@@ -85,7 +91,7 @@ mod tests {
             .iter()
             .filter_map(|ele| {
                 if let ScheduleActivity::Lesson(lesson) = ele {
-                    Some(lesson)
+                    Some(&**lesson)
                 } else {
                     None
                 }
