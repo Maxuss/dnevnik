@@ -1,5 +1,6 @@
 pub mod diary;
 pub mod model;
+pub mod prelude;
 
 #[cfg(test)]
 mod tests {

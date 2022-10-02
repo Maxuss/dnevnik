@@ -1,3 +1,5 @@
+//! Main module of this crate, allowing access to the diary
+
 use crate::model::attendance::{Payload, StudentAttendance};
 use crate::model::hw::{HomeworkAttachment, StudentHomework};
 use crate::model::lessons::{
