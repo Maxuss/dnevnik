@@ -1,7 +1,7 @@
 use chrono::{DateTime, NaiveDate, NaiveDateTime, Utc};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Teacher {
     /// Last name or surname of the account's owner
     pub last_name: String,
@@ -28,7 +28,7 @@ impl Teacher {
     }
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Grade {
     /// Five-base value of this grade
     #[serde(rename = "five")]
@@ -38,7 +38,7 @@ pub struct Grade {
     pub hundred_based: f32,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct SystemBasedMarkValue {
     /// Name of this system
     pub name: String,
@@ -54,7 +54,7 @@ pub struct SystemBasedMarkValue {
     pub grade: Grade,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct MarkInstance {
     /// Unique ID of this mark
     pub id: u64,
@@ -82,7 +82,7 @@ pub struct MarkInstance {
     pub is_point: bool,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct LessonInstance {
     /// A unique ID for this scheduled item
     #[serde(rename = "schedule_item_id")]
@@ -105,7 +105,7 @@ pub struct LessonInstance {
     pub is_virtual: bool,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Schedule {
     /// Summary for this day's schedule
     pub summary: String,
@@ -116,7 +116,7 @@ pub struct Schedule {
     pub lessons: Vec<ScheduleActivity>,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct AcademicYear {
     /// ID of this year
     pub id: u16,
@@ -132,7 +132,7 @@ pub struct AcademicYear {
     pub is_current: bool,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct LessonActivity {
     /// A string containing info for this lesson
     pub info: String,
@@ -163,7 +163,7 @@ pub struct LessonActivity {
     pub subject: LessonInstance,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct BreakActivity {
     /// A string containing info about this break. `"Перемена"` usually
     pub info: String,
@@ -179,7 +179,7 @@ pub struct BreakActivity {
     pub duration: u64,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 #[serde(tag = "type")]
 pub enum ScheduleActivity {
@@ -189,7 +189,7 @@ pub enum ScheduleActivity {
     Break(BreakActivity),
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct FinalMark {
     /// Value of this mark
     pub value: f32,
@@ -207,7 +207,7 @@ pub struct FinalMark {
     pub subject_name: String,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct LessonScheduleItem {
     /// ID of this schedule item
     pub id: u64,
@@ -217,7 +217,7 @@ pub struct LessonScheduleItem {
     pub subject_id: u64,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct ModuleTopic {
     /// ID of this topic
     pub id: u64,
@@ -235,7 +235,7 @@ pub struct ModuleTopic {
     pub updated_at: NaiveDateTime,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct PlanModule {
     /// ID of this module
     pub id: u64,
@@ -251,7 +251,7 @@ pub struct PlanModule {
     pub topics: Vec<ModuleTopic>,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct LessonPlan {
     /// ID of this lesson's plan
     pub id: u64,

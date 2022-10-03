@@ -1,7 +1,7 @@
 use chrono::NaiveDateTime;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct StudentHomework {
     /// ID of this homework
     pub id: u64,
@@ -13,7 +13,7 @@ pub struct StudentHomework {
     pub homework_entry: HomeworkEntry,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct HomeworkEntry {
     /// ID of this homework entry
     pub id: u64,
@@ -42,12 +42,12 @@ impl HomeworkEntry {
     }
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 struct InternalHomeworkEntry {
     subject: HomeworkSubject,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct HomeworkSubject {
     /// ID of this subject
     pub id: u64,
@@ -55,7 +55,7 @@ pub struct HomeworkSubject {
     pub name: String,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct HomeworkAttachment {
     /// ID of this attachment
     pub id: u64,

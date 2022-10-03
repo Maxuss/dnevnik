@@ -42,6 +42,7 @@ lazy_static! {
 }
 
 #[allow(unused)]
+#[derive(Debug, Clone)]
 pub struct Diary {
     client: Client,
     auth_token: String,

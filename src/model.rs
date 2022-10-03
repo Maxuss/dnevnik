@@ -4,10 +4,10 @@ pub mod lessons;
 pub mod marks;
 
 use chrono::NaiveDate;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct StudentSession {
     /// Unique ID of this student
     pub id: u64,
@@ -31,7 +31,7 @@ pub struct StudentSession {
     pub snils: String,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct StudentProfile {
     /// SHA256 hash of this student's profile
     pub hash: String,
@@ -49,7 +49,7 @@ impl StudentProfile {
     }
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Account {
     /// Last name or surname of the account's owner
     pub last_name: String,
@@ -79,7 +79,7 @@ pub struct Account {
     pub profile_type: Option<String>,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct School {
     /// Unique ID of the school
     pub id: u32,
@@ -96,7 +96,7 @@ pub struct School {
     pub phone: String,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct SubjectGroup {
     /// Unique ID for this subject group
     pub id: u64,
@@ -108,7 +108,7 @@ pub struct SubjectGroup {
     pub is_fake: bool,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct StudentDetails {
     /// Parent account containing some of the information for this profile
     #[serde(flatten)]

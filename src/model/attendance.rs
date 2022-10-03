@@ -1,12 +1,12 @@
 use chrono::NaiveDate;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Payload<T> {
     pub payload: T,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct StudentAttendance {
     /// Date at which this attendance happened
     pub date: NaiveDate,
@@ -14,7 +14,7 @@ pub struct StudentAttendance {
     pub visits: Vec<StudentVisit>,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct StudentVisit {
     /// Time of entrance to the school
     #[serde(rename = "in")]

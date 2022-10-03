@@ -1,8 +1,8 @@
 use crate::model::lessons::MarkInstance;
 use chrono::NaiveDate;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct GlobalAverageGrade {
     /// Name of the subject this grade belongs to
     pub subject_name: String,
@@ -16,7 +16,7 @@ pub struct GlobalAverageGrade {
     pub periods: Vec<PeriodAverageGrade>,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct PeriodAverageGrade {
     /// Name of this period
     pub name: String,
@@ -36,7 +36,7 @@ pub struct PeriodAverageGrade {
     pub marks: Vec<MarkInstance>,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct LocalGradeMark {
     /// ID of this mark
     pub id: u64,
@@ -63,7 +63,7 @@ pub struct LocalGradeMark {
     pub values: Vec<LocalGradeMarkValue>,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct LocalGradeMarkValue {
     /// Five based value for this mark
     pub five: f32,
