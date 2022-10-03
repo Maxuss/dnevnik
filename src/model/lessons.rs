@@ -135,7 +135,7 @@ pub struct AcademicYear {
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct LessonActivity {
     /// A string containing info for this lesson
-    pub info: String,
+    pub info: Option<String>,
     /// UTC time when this lesson begins
     #[serde(rename = "begin_utc")]
     #[serde(with = "chrono::serde::ts_seconds")]
