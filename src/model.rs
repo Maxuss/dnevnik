@@ -21,8 +21,9 @@ pub struct StudentSession {
     pub middle_name: String,
     /// Date of birth of the account's owner
     pub date_of_birth: Option<NaiveDate>,
-    /// Sex of the account's owner
-    pub sex: Option<String>,
+    /// Gender of the account's owner
+    #[serde(rename = "sex")]
+    pub gender: Option<String>,
     /// Phone number of the account's owner, excluding the regional phone number
     pub phone_number: String,
     /// Email address of the account's owner
@@ -59,8 +60,9 @@ pub struct Account {
     pub middle_name: String,
     /// Date of birth of the account's owner
     pub birth_date: Option<NaiveDate>,
-    /// Sex of the account's owner
-    pub sex: Option<String>,
+    /// Gender of the account's owner
+    #[serde(rename = "sex")]
+    pub gender: Option<String>,
     /// This is just an internal ID for the profile, and is not used in any
     /// student related methods
     pub user_id: Option<u32>,
